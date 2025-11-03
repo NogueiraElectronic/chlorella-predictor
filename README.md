@@ -1,4 +1,4 @@
-# 🧬 Sistema Multi-Modal para Predicción de Biomasa de *Chlorella vulgaris*
+# Multi-Modal System for Chlorella vulgaris Biomass Prediction
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-red.svg)](https://pytorch.org/)
@@ -6,196 +6,196 @@
 [![Scikit-learn](https://img.shields.io/badge/Scikit--learn-1.3+-orange.svg)](https://scikit-learn.org/)
 [![XGBoost](https://img.shields.io/badge/XGBoost-Latest-brightgreen.svg)](https://xgboost.readthedocs.io/)
 
-Sistema de predicción de alto rendimiento para cultivos de microalgas *Chlorella vulgaris* en fotobiorreactores, utilizando **Physics-Informed Neural Networks (PINN)**, **LSTM** y modelos de **Machine Learning** con arquitectura ensemble.
+High-performance prediction system for Chlorella vulgaris microalgae cultures in photobioreactors, using **Physics-Informed Neural Networks (PINN)**, **LSTM**, and **Machine Learning** models with ensemble architecture.
 
 ---
 
-## 📋 Tabla de Contenidos
+## Table of Contents
 
-- [Descripción General](#-descripción-general)
-- [Características Principales](#-características-principales)
-- [Arquitectura del Sistema](#-arquitectura-del-sistema)
-- [Metodología Científica](#-metodología-científica)
-- [Tecnologías Utilizadas](#-tecnologías-utilizadas)
-- [Resultados](#-resultados)
-- [Instalación](#-instalación)
-- [Uso](#-uso)
-- [Estructura del Código](#-estructura-del-código)
-- [Referencias Científicas](#-referencias-científicas)
-- [Autor](#-autor)
-
----
-
-## 🎯 Descripción General
-
-Este proyecto implementa un **sistema multi-modal avanzado** para la predicción de biomasa de *Chlorella vulgaris* en fotobiorreactores. Combina conocimiento biológico con técnicas de aprendizaje profundo para lograr predicciones precisas y científicamente fundamentadas.
-
-### Problema a Resolver
-
-La producción de microalgas en fotobiorreactores requiere monitoreo y optimización constante. Este sistema predice la biomasa futura basándose en:
-- Variables ambientales (temperatura, pH, luz PAR)
-- Dinámica de nutrientes
-- Fases de crecimiento
-- Patrones temporales
-
-### Solución Implementada
-
-Un sistema robusto que integra:
-- **6 modelos predictivos** (Linear, Ridge, RandomForest, XGBoost, PINN, LSTM)
-- **Ensemble ponderado** basado en rendimiento
-- **Detección automática de data leakage**
-- **Ingeniería de características biológicas** (40+ features)
-- **Validación temporal por escenarios**
+- [General Description](#general-description)
+- [Main Features](#main-features)
+- [System Architecture](#system-architecture)
+- [Scientific Methodology](#scientific-methodology)
+- [Technologies Used](#technologies-used)
+- [Results](#results)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Code Structure](#code-structure)
+- [Scientific References](#scientific-references)
+- [Author](#author)
 
 ---
 
-## ✨ Características Principales
+## General Description
 
-### 🔬 **1. Gestión Inteligente de Datos**
-- ✅ Detección automática de **data leakage** (umbral 0.95)
-- ✅ Validación de variables biológicas
-- ✅ Limpieza y preprocesamiento robusto
-- ✅ Manejo de outliers con clipping (percentiles 0.5-99.5%)
+This project implements an **advanced multi-modal system** for predicting Chlorella vulgaris biomass in photobioreactors. It combines biological knowledge with deep learning techniques to achieve accurate and scientifically grounded predictions.
 
-### 🧪 **2. Ingeniería de Características Biológicas**
+### Problem to Solve
 
-#### Variables Fotosintéticas
-- **Eficiencia lumínica** (Michaelis-Menten)
+Microalgae production in photobioreactors requires constant monitoring and optimization. This system predicts future biomass based on:
+- Environmental variables (temperature, pH, PAR light)
+- Nutrient dynamics
+- Growth phases
+- Temporal patterns
+
+### Implemented Solution
+
+A robust system that integrates:
+- **6 predictive models** (Linear, Ridge, RandomForest, XGBoost, PINN, LSTM)
+- **Weighted ensemble** based on performance
+- **Automatic data leakage detection**
+- **Biological feature engineering** (40+ features)
+- **Temporal validation by scenarios**
+
+---
+
+## Main Features
+
+### 1. Intelligent Data Management
+- Automatic detection of **data leakage** (threshold 0.95)
+- Biological variable validation
+- Robust cleaning and preprocessing
+- Outlier handling with clipping (percentiles 0.5-99.5%)
+
+### 2. Biological Feature Engineering
+
+#### Photosynthetic Variables
+- **Light efficiency** (Michaelis-Menten)
   ```
   P = (I * Pmax) / (I + K)
   K = 150 µmol/m²/s
   ```
-- **Fotoinhibición** (umbral 300 µmol/m²/s)
-- **Ecuación de Jassby-Platt** (eficiencia inicial α=0.012)
+- **Photoinhibition** (threshold 300 µmol/m²/s)
+- **Jassby-Platt equation** (initial efficiency α=0.012)
 
-#### Variables Ambientales
-- **Efectos de temperatura** (función gaussiana, óptimo 28°C)
-- **Efectos de pH** (función gaussiana, óptimo 8.0)
-- **Estrés ambiental** combinado
-- **Interacciones multi-factor**
+#### Environmental Variables
+- **Temperature effects** (Gaussian function, optimum 28°C)
+- **pH effects** (Gaussian function, optimum 8.0)
+- **Combined environmental stress**
+- **Multi-factor interactions**
 
-#### Dinámica de Nutrientes
-- **Modelo de Haldane** (incluye inhibición por exceso)
+#### Nutrient Dynamics
+- **Haldane model** (includes inhibition by excess)
   ```
   E = N / (Ks + N + N²/Ki)
   Ks = 0.02, Ki = 1.5
   ```
 
-#### Variables Temporales
-- **Ciclos circadianos** (sin/cos 24h)
-- **Fases de crecimiento** (lag, exponencial, estacionaria, decline)
+#### Temporal Variables
+- **Circadian cycles** (sin/cos 24h)
+- **Growth phases** (lag, exponential, stationary, decline)
 
-### 🎯 **3. Selección de Características (Ensemble de 3 Métodos)**
-1. **Correlación de Pearson** → Relaciones lineales
-2. **SelectKBest (f_regression)** → Importancia estadística
-3. **Random Forest (50 árboles)** → Relaciones no lineales
+### 3. Feature Selection (Ensemble of 3 Methods)
+1. **Pearson Correlation** → Linear relationships
+2. **SelectKBest (f_regression)** → Statistical importance
+3. **Random Forest (50 trees)** → Non-linear relationships
 
-### 🔄 **4. División de Datos y Reproducibilidad**
-- **División por escenarios**: 45 cultivos entrenamiento / 15 cultivos validación
-- **Semilla fija**: `SEED=50` (reproducibilidad total)
-- **Validación interna**: 80-20 dentro del set de entrenamiento
-- **Normalización**: RobustScaler (features) + StandardScaler (target)
+### 4. Data Splitting and Reproducibility
+- **Scenario-based splitting**: 45 cultures training / 15 cultures validation
+- **Fixed seed**: `SEED=50` (total reproducibility)
+- **Internal validation**: 80-20 within training set
+- **Normalization**: RobustScaler (features) + StandardScaler (target)
 
-### 🤖 **5. Sistema Multi-Modelo**
+### 5. Multi-Model System
 
-#### Modelos Clásicos
-- **Linear Regression**: Baseline simple
-- **Ridge (α=1.0)**: Regularización L2
-- **RandomForest (100 trees, depth=8)**: Interacciones no lineales
-- **XGBoost (300 estimators)**: Boosting avanzado
+#### Classical Models
+- **Linear Regression**: Simple baseline
+- **Ridge (α=1.0)**: L2 regularization
+- **RandomForest (100 trees, depth=8)**: Non-linear interactions
+- **XGBoost (300 estimators)**: Advanced boosting
 
-#### Redes Neuronales
+#### Neural Networks
 - **PINN (Physics-Informed Neural Network)**
-  - Arquitectura: `[input] → BatchNorm → 64 → ReLU → Dropout(0.3) → 32 → ReLU → Dropout(0.2) → 1`
-  - Función de pérdida biológica: `Loss = MSE + 0.1 * bio_penalty`
-  - Penalización: `bio_penalty = mean(ReLU(-pred)) * 5` (no permite biomasa negativa)
-  - Optimizador: **AdamW** (lr=0.001, weight_decay=0.01)
-  - Early selection cada 50 epochs
+  - Architecture: `[input] → BatchNorm → 64 → ReLU → Dropout(0.3) → 32 → ReLU → Dropout(0.2) → 1`
+  - Biological loss function: `Loss = MSE + 0.1 * bio_penalty`
+  - Penalty: `bio_penalty = mean(ReLU(-pred)) * 5` (prevents negative biomass)
+  - Optimizer: **AdamW** (lr=0.001, weight_decay=0.01)
+  - Early selection every 50 epochs
 
 - **LSTM (Long Short-Term Memory)**
-  - Arquitectura: `[input, seq_len=1] → LSTM(32, dropout=0.2) → Dense(16) → ReLU → Dropout(0.2) → 1`
-  - Optimizador: **AdamW** (lr=0.001, weight_decay=0.01)
-  - Gradient clipping: norma L2 a 1.0
-  - Early selection cada 50 epochs
+  - Architecture: `[input, seq_len=1] → LSTM(32, dropout=0.2) → Dense(16) → ReLU → Dropout(0.2) → 1`
+  - Optimizer: **AdamW** (lr=0.001, weight_decay=0.01)
+  - Gradient clipping: L2 norm to 1.0
+  - Early selection every 50 epochs
 
-#### Ensemble Ponderado
+#### Weighted Ensemble
 ```python
-peso_modelo = (1/MSE_modelo) / Σ(1/MSE_todos)
-predicción_final = Σ(peso_modelo * predicción_modelo)
+model_weight = (1/MSE_model) / Σ(1/MSE_all)
+final_prediction = Σ(model_weight * model_prediction)
 ```
 
-### 📊 **6. Evaluación Integral**
+### 6. Comprehensive Evaluation
 
-Métricas implementadas:
-- **R²** (Coeficiente de Determinación)
+Implemented metrics:
+- **R²** (Coefficient of Determination)
 - **RMSE** (Root Mean Square Error)
 - **MAE** (Mean Absolute Error)
 - **MAPE** (Mean Absolute Percentage Error)
 - **NSE** (Nash-Sutcliffe Efficiency)
-- **Bias** (Sesgo relativo)
+- **Bias** (Relative bias)
 
-Detección de overfitting:
-- **ALTO**: R² > 0.99
-- **MEDIO**: 0.97 < R² ≤ 0.99
-- **BAJO**: R² ≤ 0.97
+Overfitting detection:
+- **HIGH**: R² > 0.99
+- **MEDIUM**: 0.97 < R² ≤ 0.99
+- **LOW**: R² ≤ 0.97
 
-### 📈 **7. Visualizaciones Avanzadas**
-1. **Scatter Plot** (Predicho vs Observado)
-2. **Comparación de R²** por modelo (códigos de color por riesgo)
-3. **Comparación de RMSE**
-4. **Análisis de residuos** (detección de patrones)
-5. **Distribución de residuos** (test de normalidad)
-6. **Multi-métrica** (R² + NSE lado a lado)
-7. **Importancia de características** (Random Forest)
+### 7. Advanced Visualizations
+1. **Scatter Plot** (Predicted vs Observed)
+2. **R² comparison** by model (color codes by risk)
+3. **RMSE comparison**
+4. **Residual analysis** (pattern detection)
+5. **Residual distribution** (normality test)
+6. **Multi-metric** (R² + NSE side by side)
+7. **Feature importance** (Random Forest)
 
 ---
 
-## 🏗️ Arquitectura del Sistema
+## System Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                   SISTEMA MULTI-MODAL CHLORELLA                 │
+│                   CHLORELLA MULTI-MODAL SYSTEM                  │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│  PASO 1: SmartDataManager - Carga y Limpieza                   │
-│  • Detección de data leakage (correlación > 0.95)              │
-│  • Eliminación de variables problemáticas                       │
-│  • Validación de integridad de datos                            │
+│  STEP 1: SmartDataManager - Loading and Cleaning               │
+│  • Data leakage detection (correlation > 0.95)                 │
+│  • Removal of problematic variables                            │
+│  • Data integrity validation                                    │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│  PASO 2: BioFeatureEngine - Feature Engineering                │
-│  • Variables fotosintéticas (Michaelis-Menten, fotoinhibición) │
-│  • Variables ambientales (temp, pH, estrés)                     │
-│  • Dinámica de nutrientes (Haldane)                             │
-│  • Variables temporales (ciclos circadianos, fases)             │
-│  • 40+ características biológicas creadas                        │
+│  STEP 2: BioFeatureEngine - Feature Engineering                │
+│  • Photosynthetic variables (Michaelis-Menten, photoinhibition)│
+│  • Environmental variables (temp, pH, stress)                   │
+│  • Nutrient dynamics (Haldane)                                  │
+│  • Temporal variables (circadian cycles, phases)                │
+│  • 40+ biological features created                              │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│  PASO 3: Selección de Características (Ensemble 3 métodos)     │
-│  • Correlación de Pearson (mediana como umbral)                │
-│  • SelectKBest + f_regression (mediana F-scores)               │
-│  • Random Forest importances (mediana como umbral)             │
-│  • Features finales: TOP de cada método combinados              │
+│  STEP 3: Feature Selection (Ensemble of 3 methods)             │
+│  • Pearson Correlation (median as threshold)                    │
+│  • SelectKBest + f_regression (median F-scores)                │
+│  • Random Forest importances (median as threshold)             │
+│  • Final features: TOP from each method combined                │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│  PASO 4: División y Normalización                              │
-│  • División por escenarios (45 train / 15 val)                 │
-│  • Selección aleatoria con SEED=50 (reproducibilidad)          │
-│  • RobustScaler para features                                   │
-│  • StandardScaler para target (biomasa)                         │
+│  STEP 4: Splitting and Normalization                           │
+│  • Scenario-based splitting (45 train / 15 val)                │
+│  • Random selection with SEED=50 (reproducibility)              │
+│  • RobustScaler for features                                    │
+│  • StandardScaler for target (biomass)                          │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│  PASO 5: CompactMultiModel - Entrenamiento                     │
+│  STEP 5: CompactMultiModel - Training                          │
 │                                                                 │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐        │
 │  │   Linear     │  │    Ridge     │  │ RandomForest │        │
@@ -207,117 +207,117 @@ Detección de overfitting:
 │  │(300 estim.)  │  │(Bio-informed)│  │  (seq=1)     │        │
 │  └──────────────┘  └──────────────┘  └──────────────┘        │
 │                                                                 │
-│  Validación interna (80-20) para calcular pesos                │
+│  Internal validation (80-20) to calculate weights              │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│  PASO 6: Ensemble Ponderado                                    │
-│  peso_i = (1/MSE_i) / Σ(1/MSE_j)                              │
-│  pred_final = Σ(peso_i * pred_i)                              │
+│  STEP 6: Weighted Ensemble                                     │
+│  weight_i = (1/MSE_i) / Σ(1/MSE_j)                            │
+│  pred_final = Σ(weight_i * pred_i)                            │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│  PASO 7: Evaluación y Visualización                            │
-│  • Métricas: R², RMSE, MAE, MAPE, NSE, Bias                   │
-│  • Detección de overfitting                                     │
-│  • 7 gráficos de análisis                                       │
-│  • Importancia de características                               │
+│  STEP 7: Evaluation and Visualization                          │
+│  • Metrics: R², RMSE, MAE, MAPE, NSE, Bias                    │
+│  • Overfitting detection                                        │
+│  • 7 analysis plots                                             │
+│  • Feature importance                                           │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 🔬 Metodología Científica
+## Scientific Methodology
 
-### Fundamentos Biológicos
+### Biological Foundations
 
-#### 1. Fotosíntesis (Michaelis-Menten)
+#### 1. Photosynthesis (Michaelis-Menten)
 ```
 P = (I * Pmax) / (I + K)
 ```
-- **I**: Intensidad de luz (PAR, µmol/m²/s)
-- **K**: Constante de semisaturación (150 µmol/m²/s)
-- **Pmax**: Tasa máxima de fotosíntesis (normalizada a 1)
+- **I**: Light intensity (PAR, µmol/m²/s)
+- **K**: Half-saturation constant (150 µmol/m²/s)
+- **Pmax**: Maximum photosynthesis rate (normalized to 1)
 
-**Referencias:**
+**References:**
 - Falkowski & Raven (2013) - *Aquatic Photosynthesis*
-- Jassby & Platt (1976) - Curvas P-I para microalgas
+- Jassby & Platt (1976) - P-I curves for microalgae
 
-#### 2. Fotoinhibición
+#### 2. Photoinhibition
 ```
 F = max(0, (PAR - 300) / 100)
 ```
-- Umbral: 300 µmol/m²/s
-- Máxima: 400 µmol/m²/s
+- Threshold: 300 µmol/m²/s
+- Maximum: 400 µmol/m²/s
 
-**Referencias:**
+**References:**
 - Long et al. (1994) - *Photoinhibition of photosynthesis in nature*
 - Tredici (2010) - *Photobiology of microalgae mass cultures*
 
-#### 3. Efectos de Temperatura y pH (Gaussianas)
+#### 3. Temperature and pH Effects (Gaussian)
 ```
-efecto_temp = exp(-((T - 28)² / 50))
-efecto_pH = exp(-((pH - 8.0)² / 2))
+temp_effect = exp(-((T - 28)² / 50))
+pH_effect = exp(-((pH - 8.0)² / 2))
 ```
-- **Temperatura óptima**: 28°C (σ = 5°C)
-- **pH óptimo**: 8.0 (σ = 1.0)
+- **Optimal temperature**: 28°C (σ = 5°C)
+- **Optimal pH**: 8.0 (σ = 1.0)
 
-**Referencias:**
+**References:**
 - Eppley (1972) - *Temperature and phytoplankton growth*
 - Raven & Geider (1988) - *Temperature and algal growth*
-- Goldman & Azam (1978) - Efectos del pH en fotosíntesis
+- Goldman & Azam (1978) - pH effects on photosynthesis
 
-#### 4. Dinámica de Nutrientes (Haldane)
+#### 4. Nutrient Dynamics (Haldane)
 ```
 E = N / (Ks + N + N²/Ki)
 ```
-- **Ks**: 0.02 (semisaturación)
-- **Ki**: 1.5 (inhibición por exceso)
+- **Ks**: 0.02 (half-saturation)
+- **Ki**: 1.5 (inhibition by excess)
 
-**Referencias:**
+**References:**
 - Monod (1949) - *Growth of bacterial cultures*
 - Bernard (2011) - *Modelling and control of microalgae for CO2 mitigation*
 
 ### Anti-Overfitting Strategy
 
-1. **Validación temporal por escenarios** (evita data leakage)
-2. **Detección automática de variables problemáticas** (correlación > 0.95)
-3. **Ensemble de 3 métodos** para selección de características
-4. **Regularización L2** (Ridge, AdamW)
-5. **Dropout** en redes neuronales (0.2-0.3)
-6. **Early selection** basada en validación interna
-7. **Gradient clipping** en LSTM (norma L2 ≤ 1.0)
+1. **Temporal validation by scenarios** (prevents data leakage)
+2. **Automatic detection of problematic variables** (correlation > 0.95)
+3. **Ensemble of 3 methods** for feature selection
+4. **L2 regularization** (Ridge, AdamW)
+5. **Dropout** in neural networks (0.2-0.3)
+6. **Early selection** based on internal validation
+7. **Gradient clipping** in LSTM (L2 norm ≤ 1.0)
 
 ---
 
-## 💻 Tecnologías Utilizadas
+## Technologies Used
 
 ### Core ML/DL
 - **Python** 3.8+
 - **PyTorch** 2.0+ (PINN, LSTM)
-- **Scikit-learn** 1.3+ (modelos clásicos, métricas, preprocesamiento)
-- **XGBoost** (boosting avanzado)
+- **Scikit-learn** 1.3+ (classical models, metrics, preprocessing)
+- **XGBoost** (advanced boosting)
 
-### Procesamiento de Datos
-- **NumPy** (operaciones numéricas)
-- **Pandas** (manipulación de datos)
+### Data Processing
+- **NumPy** (numerical operations)
+- **Pandas** (data manipulation)
 
-### Visualización
-- **Matplotlib** (gráficos estáticos)
-- **Seaborn** (visualización estadística)
+### Visualization
+- **Matplotlib** (static plots)
+- **Seaborn** (statistical visualization)
 
-### Estadística
-- **SciPy** (pruebas estadísticas, distribuciones)
+### Statistics
+- **SciPy** (statistical tests, distributions)
 
 ---
 
-## 📊 Resultados
+## Results
 
-### Rendimiento del Sistema
+### System Performance
 
-| Modelo | R² | RMSE (g/L) | MAE (g/L) | MAPE (%) | NSE | Bias (%) | Risk |
+| Model | R² | RMSE (g/L) | MAE (g/L) | MAPE (%) | NSE | Bias (%) | Risk |
 |--------|-----|------------|-----------|----------|-----|----------|------|
 | **Ensemble** | **0.93** | **0.XX** | **0.XX** | **X.X** | **0.XX** | **±X.X** | **LOW** |
 | PINN | 0.91 | 0.XX | 0.XX | X.X | 0.XX | ±X.X | LOW |
@@ -327,47 +327,47 @@ E = N / (Ks + N + N²/Ki)
 | Ridge | 0.82 | 0.XX | 0.XX | X.X | 0.XX | ±X.X | LOW |
 | Linear | 0.80 | 0.XX | 0.XX | X.X | 0.XX | ±X.X | LOW |
 
-### Características Más Importantes (Top 10)
+### Most Important Features (Top 10)
 
-1. **efecto_pH** (0.XX)
-2. **calidad_ambiental** (0.XX)
-3. **capacidad_fotosintetica** (0.XX)
-4. **efecto_temp** (0.XX)
-5. **eficiencia_luminica__jassby_platt** (0.XX)
-6. **efecto_de_nutrientes_haldane** (0.XX)
+1. **pH_effect** (0.XX)
+2. **environmental_quality** (0.XX)
+3. **photosynthetic_capacity** (0.XX)
+4. **temp_effect** (0.XX)
+5. **light_efficiency_jassby_platt** (0.XX)
+6. **nutrient_effect_haldane** (0.XX)
 7. **Temperature_C** (0.XX)
 8. **pH** (0.XX)
 9. **PAR_umol_m2_s** (0.XX)
 10. **Time_h** (0.XX)
 
-### Mejoras Clave del Sistema
+### Key System Improvements
 
-- **Selección aleatoria de escenarios** (vs. split fijo): +8% en R² (0.85 → 0.93)
-- **Ensemble ponderado** (vs. mejor modelo individual): +2% en R²
-- **Feature engineering biológico** (vs. features raw): +15% en R²
-- **PINN con penalización biológica** (vs. red estándar): Predicciones 100% no negativas
+- **Random scenario selection** (vs. fixed split): +8% in R² (0.85 → 0.93)
+- **Weighted ensemble** (vs. best individual model): +2% in R²
+- **Biological feature engineering** (vs. raw features): +15% in R²
+- **PINN with biological penalty** (vs. standard network): 100% non-negative predictions
 
 ---
 
-## 🚀 Instalación
+## Installation
 
-### Requisitos Previos
-- Python 3.8 o superior
-- pip (gestor de paquetes de Python)
-- 4GB RAM mínimo (8GB recomendado)
+### Prerequisites
+- Python 3.8 or higher
+- pip (Python package manager)
+- 4GB RAM minimum (8GB recommended)
 
-### Instalación Rápida
+### Quick Installation
 
 ```bash
-# 1. Clonar el repositorio
+# 1. Clone the repository
 git clone https://github.com/NogueiraElectronic/chlorella-biomass-predictor.git
 cd chlorella-biomass-predictor
 
-# 2. Crear entorno virtual (recomendado)
+# 2. Create virtual environment (recommended)
 python -m venv venv
-source venv/bin/activate  # En Windows: venv\Scripts\activate
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-# 3. Instalar dependencias
+# 3. Install dependencies
 pip install -r requirements.txt
 ```
 
@@ -379,159 +379,159 @@ torch>=2.0.0
 scikit-learn>=1.3.0
 xgboost>=2.0.0
 
-# Procesamiento de datos
+# Data processing
 numpy>=1.24.0
 pandas>=2.0.0
 
-# Visualización
+# Visualization
 matplotlib>=3.7.0
 seaborn>=0.12.0
 
-# Estadística
+# Statistics
 scipy>=1.10.0
 
-# Utilidades
+# Utilities
 tqdm>=4.65.0
 ```
 
 ---
 
-## 📖 Uso
+## Usage
 
-### Ejecución Básica
+### Basic Execution
 
 ```bash
 python chlorella_predictor.py
 ```
 
-### Flujo de Trabajo
+### Workflow
 
 ```python
-# 1. Importar el sistema
+# 1. Import the system
 from chlorella_predictor import run_compact_research
 
-# 2. Ejecutar el pipeline completo
+# 2. Run the complete pipeline
 results = run_compact_research()
 
-# 3. Acceder a resultados
-print(f"Mejor modelo: {results['best_model']}")
+# 3. Access results
+print(f"Best model: {results['best_model']}")
 print(f"R²: {results['results'][results['best_model']]['R²']:.4f}")
 print(f"RMSE: {results['results'][results['best_model']]['RMSE']:.4f}")
 ```
 
-### Uso Avanzado
+### Advanced Usage
 
 ```python
-# Acceder a componentes individuales
-system = results['system']  # Sistema multi-modelo
-engine = results['engine']   # Motor de features
+# Access individual components
+system = results['system']  # Multi-model system
+engine = results['engine']   # Feature engine
 
-# Hacer predicciones en nuevos datos
-predictions = system.predict(X_nuevos_datos)
+# Make predictions on new data
+predictions = system.predict(X_new_data)
 
-# Ver características seleccionadas
-print(f"Features utilizadas: {engine.selected_features}")
+# View selected features
+print(f"Features used: {engine.selected_features}")
 
-# Ver pesos del ensemble
-print(f"Pesos de modelos: {system.weights}")
+# View ensemble weights
+print(f"Model weights: {system.weights}")
 ```
 
-### Personalización
+### Customization
 
-#### Cambiar número de epochs
+#### Change number of epochs
 ```python
 system = CompactMultiModel()
-system.train_all(X_train, y_train, epochs=200)  # Por defecto: 150
+system.train_all(X_train, y_train, epochs=200)  # Default: 150
 ```
 
-#### Ajustar umbral de data leakage
+#### Adjust data leakage threshold
 ```python
-manager = SmartDataManager(leakage_threshold=0.90)  # Por defecto: 0.95
+manager = SmartDataManager(leakage_threshold=0.90)  # Default: 0.95
 ```
 
-#### Modificar número de características
+#### Modify number of features
 ```python
 X_train, X_val, y_train_s, y_val_s, y_train, y_val = \
-    engine.seleccion_y_preparacion_features(df, max_features=30)  # Por defecto: mediana
+    engine.selection_and_feature_preparation(df, max_features=30)  # Default: median
 ```
 
 ---
 
-## 📁 Estructura del Código
+## Code Structure
 
 ```
 chlorella-biomass-predictor/
 │
-├── chlorella_predictor.py          # Script principal
-├── requirements.txt                 # Dependencias
-├── README.md                        # Este archivo
-├── LICENSE                          # Licencia MIT
+├── chlorella_predictor.py          # Main script
+├── requirements.txt                 # Dependencies
+├── README.md                        # This file
+├── LICENSE                          # MIT License
 │
 ├── data/
-│   └── complete_dataset.csv        # Dataset de 60 escenarios (18K+ registros)
+│   └── complete_dataset.csv        # Dataset of 60 scenarios (18K+ records)
 │
-├── models/                          # (Opcional) Modelos guardados
+├── models/                          # (Optional) Saved models
 │   ├── best_pinn.pth
 │   ├── best_lstm.pth
 │   └── ensemble_weights.pkl
 │
-├── outputs/                         # Resultados y visualizaciones
+├── outputs/                         # Results and visualizations
 │   ├── feature_importance.png
 │   ├── model_comparison.png
 │   ├── residuals_analysis.png
 │   └── predictions_vs_observed.png
 │
-└── docs/                            # Documentación adicional
+└── docs/                            # Additional documentation
     ├── methodology.md
     ├── biological_foundations.md
     └── api_reference.md
 ```
 
-### Componentes Principales
+### Main Components
 
 #### 1. `SmartDataManager`
-- Carga y validación de datos
-- Detección automática de data leakage
-- Limpieza y preprocesamiento
+- Data loading and validation
+- Automatic data leakage detection
+- Cleaning and preprocessing
 
 #### 2. `BioFeatureEngine`
-- Creación de 40+ características biológicas
-- Implementación de ecuaciones científicas
-- Normalización y escalado
-- Selección de características (ensemble 3 métodos)
-- División temporal por escenarios
+- Creation of 40+ biological features
+- Implementation of scientific equations
+- Normalization and scaling
+- Feature selection (ensemble of 3 methods)
+- Temporal splitting by scenarios
 
 #### 3. `CompactPINN` (PyTorch)
-- Red neuronal con restricciones biológicas
-- Arquitectura: BatchNorm → 64 → 32 → 1
-- Función de pérdida custom (MSE + penalización)
-- Optimización con AdamW
+- Neural network with biological constraints
+- Architecture: BatchNorm → 64 → 32 → 1
+- Custom loss function (MSE + penalty)
+- AdamW optimization
 
 #### 4. `CompactLSTM` (PyTorch)
-- Red recurrente para series temporales
+- Recurrent network for time series
 - LSTM(32) + Dense(16) + Dropout
-- Gradient clipping para estabilidad
+- Gradient clipping for stability
 
 #### 5. `CompactMultiModel`
-- Entrenamiento de 6 modelos
-- Cálculo de pesos por rendimiento
-- Predicción ensemble ponderada
+- Training of 6 models
+- Weight calculation by performance
+- Weighted ensemble prediction
 
-#### 6. Funciones de Evaluación
-- `evaluate_models()`: Métricas completas
-- `create_plots()`: 7 visualizaciones
-- `analyze_importance()`: Features importantes
+#### 6. Evaluation Functions
+- `evaluate_models()`: Complete metrics
+- `create_plots()`: 7 visualizations
+- `analyze_importance()`: Important features
 
 ---
 
-## 🔬 Referencias Científicas
+## Scientific References
 
-### Biología de Microalgas
+### Microalgae Biology
 1. **Falkowski, P. G., & Raven, J. A. (2013)**. *Aquatic Photosynthesis*. Princeton University Press.
 2. **Tredici, M. R. (2010)**. Photobiology of microalgae mass cultures. *Biofuels*, 1(1), 143-162.
 3. **Eppley, R. W. (1972)**. Temperature and phytoplankton growth in the sea. *Fishery Bulletin*, 70(4), 1063-1085.
 
-### Modelado y Control
+### Modeling and Control
 4. **Monod, J. (1949)**. The growth of bacterial cultures. *Annual Review of Microbiology*, 3(1), 371-394.
 5. **Bernard, O. (2011)**. Hurdles and challenges for modelling and control of microalgae. *Journal of Process Control*, 21(10), 1378-1389.
 
@@ -548,58 +548,58 @@ chlorella-biomass-predictor/
 
 ---
 
-## 👨‍💻 Autor
+## Author
 
 **Jesús Torres Nogueira**  
-Ingeniero Electrónico Industrial y Automático
+Industrial and Automatic Electronic Engineer
 
-- 🔗 GitHub: [@NogueiraElectronic](https://github.com/NogueiraElectronic)
-- 📧 Email: nogueira.electronico@gmail.com
-- 🌐 Portfolio: [nogueiraelectronic.github.io](https://nogueiraelectronic.github.io/)
-- 💼 LinkedIn: [Jesús Torres Nogueira](https://linkedin.com/in/jesus-torres-nogueira)
-
----
-
-## 📄 Licencia
-
-Este proyecto está licenciado bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para más detalles.
+- GitHub: [@NogueiraElectronic](https://github.com/NogueiraElectronic)
+- Email: nogueira.electronico@gmail.com
+- Portfolio: [nogueiraelectronic.github.io](https://nogueiraelectronic.github.io/)
+- LinkedIn: [Jesús Torres Nogueira](https://linkedin.com/in/jesus-torres-nogueira)
 
 ---
 
-## 🙏 Agradecimientos
+## License
 
-- A la comunidad científica por las ecuaciones biológicas validadas
-- Al equipo de PyTorch por la flexibilidad en redes neuronales custom
-- A Scikit-learn por las herramientas de ML clásico
-- A todos los investigadores que trabajan en optimización de cultivos de microalgas
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
 
 ---
 
-## 📊 Estado del Proyecto
+## Acknowledgments
 
-✅ **Versión Estable**: Sistema completamente funcional  
-🔄 **En Desarrollo**: Integración con sistemas de monitoreo en tiempo real  
-📝 **Próximas Features**:
-- API REST para predicciones en tiempo real
-- Dashboard interactivo con visualizaciones en vivo
-- Integración con sensores IoT
-- Optimización automática de condiciones de cultivo
-- Transferencia de aprendizaje a otras especies de microalgas
+- To the scientific community for validated biological equations
+- To the PyTorch team for flexibility in custom neural networks
+- To Scikit-learn for classical ML tools
+- To all researchers working on microalgae culture optimization
 
 ---
 
-## 📞 Contacto
+## Project Status
 
-¿Interesado en colaborar o implementar este sistema en tu fotobiorreactor?
+**Stable Version**: Fully functional system  
+**In Development**: Integration with real-time monitoring systems  
+**Upcoming Features**:
+- REST API for real-time predictions
+- Interactive dashboard with live visualizations
+- IoT sensor integration
+- Automatic optimization of culture conditions
+- Transfer learning to other microalgae species
 
-📧 **nogueira.electronico@gmail.com**
+---
+
+## Contact
+
+Interested in collaborating or implementing this system in your photobioreactor?
+
+**nogueira.electronico@gmail.com**
 
 ---
 
 <div align="center">
 
-**⭐ Si este proyecto te ha sido útil, considera darle una estrella en GitHub ⭐**
+**If this project has been useful to you, consider giving it a star on GitHub**
 
-Made with 🧬 by [Jesús Torres Nogueira](https://github.com/NogueiraElectronic)
+Made with by [Jesús Torres Nogueira](https://github.com/NogueiraElectronic)
 
-</div># chlorella-predictor
+</div>
